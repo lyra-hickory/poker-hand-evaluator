@@ -23,5 +23,7 @@ class Card(BaseModel):
 
     @property
     def value_as_int(self):
+        if not self.value in CardValueEnum.__dict__['_member_names_']:
+            return None
         return getattr(CardValueEnum, self.value)
 
