@@ -66,7 +66,7 @@ class TestEvaluateHand(unittest.TestCase):
                     'Ace of Spades',
                     'Ace of Diamonds',
                 ],
-                kickers=['10 of Hearts',],
+                kickers=['Ten of Hearts',],
                 rank='Four of a Type'),
         },
         # Full House
@@ -80,11 +80,11 @@ class TestEvaluateHand(unittest.TestCase):
             ],
             'expected': EvaluateResponse(
                 playingHand=[
+                    'Three of Hearts',
+                    'Three of Clubs',
                     'Two of Hearts',
                     'Two of Clubs',
                     'Two of Diamonds',
-                    'Three of Hearts',
-                    'Three of Clubs',
                 ],
                 kickers=[],
                 rank='Full House'),
@@ -204,10 +204,10 @@ class TestEvaluateHand(unittest.TestCase):
                     'Queen of Hearts',
                 ],
                 kickers=[
-                    'Seven of Clubs',
                     'Ten of Hearts',
-                    'Two of Diamonds',
+                    'Seven of Clubs',
                     'Three of Spades',
+                    'Two of Diamonds',
                 ],
                 rank='Highest'),
         },
