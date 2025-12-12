@@ -218,7 +218,7 @@ class TestEvaluateHand(unittest.TestCase):
             # Act
             result = evaluate_hand(case['test'])
             # Assert
-            self.assertEqual(result, case['expected'], f'\nOutputs not matching '
+            self.assertEqual(result, case['expected'], f'\nOutputs not matching for {case['expected'].rank}'
                              f'\nResulted Case : {result}'
                              f'\nExpected Case : {case['expected']}')
 
