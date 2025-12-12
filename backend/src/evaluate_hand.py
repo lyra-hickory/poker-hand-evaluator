@@ -36,7 +36,7 @@ def evaluate_hand(hand: list[Card]):
 
     # check if same suit
     def check_if_same_suit(val:Card|bool, e:Card):
-        if not val:
+        if val == False:
             return False
         if val.suit != e.suit:
             return False
