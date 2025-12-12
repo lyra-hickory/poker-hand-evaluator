@@ -11,6 +11,7 @@ async def root():
     return {"message": "Submit your hand to /eval-hand/ in order to have it evaluated. "
                        "Check out the docs for more information at /docs/"}
 
+# TODO: Test the api endpoint
 @app.post("/eval-hand/")
 async def evaluate(cards: list[Card], response: Response):
     # Validate the cards input
