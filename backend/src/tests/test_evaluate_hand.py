@@ -211,6 +211,13 @@ class TestEvaluateHand(unittest.TestCase):
                 ],
                 rank='Highest'),
         },
+    #     TODO: add failing scenarios
+    #     namely not having the right amount of cards
+    #     duplicates should fail as well
+    #
+    #     Too many cards
+    #     Too few cards
+    #     Duplicate cards
     ]
 
     def test_eval_cases(self):
