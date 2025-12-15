@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardForm } from './card-form';
 import {Card, HandOfCards} from '../../interfaces/handOfCards';
-import {beforeEach, expect} from 'vitest';
+import {EvaluateHandService} from '../../services/evaluate-hand-service';
+import {describe, it, expect, vi, beforeEach} from 'vitest';
 
 describe('CardForm', () => {
   let component: CardForm;
@@ -107,6 +108,32 @@ describe('CardForm', () => {
       expect(consoleLogSpy).toBeCalledWith('You have already added the King of Diamonds');
       expect(component.handToEval().cards.length).toBe(1);
       expect(component.handToEval()).toEqual(mockHand);
+    });
+  });
+
+  describe('submitHand', () => {
+    it('should submit', () => {
+      // Assemble
+      const evaluateSubmitSpy = vi.spyOn(TestBed.inject(EvaluateHandService), 'submitHandForEvaluation');
+      const submitHandSpy = vi.spyOn(component, 'submitHand');
+      const mockHand:HandOfCards = {cards: [
+          {value: 'one', suit: 'c'},    // 1
+          {value: 'two', suit: 'd'},    // 2
+          {value: 'three', suit: 'h'},  // 3
+          {value: 'four', suit: 's'},   // 4
+          {value: 'five', suit: 'c'},   // 5
+        ]};
+      component.handToEval.set(mockHand);
+      component.hasFullHand.set(true);
+      const button = fixture.nativeElement.querySelector('#submit-hand-button');
+
+      // Act
+      fixture.detectChanges();  // detect changes before we click
+      button.click();
+
+      // Assert
+      expect(evaluateSubmitSpy).toHaveBeenCalledWith(component.handToEval());
+      expect(submitHandSpy).toHaveBeenCalledOnce();
     });
   });
 });
