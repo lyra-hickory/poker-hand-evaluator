@@ -28,14 +28,15 @@ describe('CardForm', () => {
       value: 'king',
       suit: 'd'
     };
+    let button:HTMLElement;
 
     beforeEach(() => {
       component.inputCard.set({...cardToAdd});
+      button = fixture.nativeElement.querySelector('#add-card-to-hand-button');
     })
 
     it('should add a card to the hand when button is clicked', () => {
       // assemble
-      const button  = fixture.nativeElement.querySelector('#add-card-to-hand-button');
       const addCardToHandSpy = vi.spyOn(component, 'addCardToHand');
 
       // act
@@ -45,6 +46,27 @@ describe('CardForm', () => {
       expect(addCardToHandSpy).toHaveBeenCalledOnce();
       expect(component.handToEval().cards.length).toBe(1);
       expect(component.handToEval().cards[0]).toEqual(cardToAdd);
+      expect(component.hasFullHand()).toBe(false);
+    });
+
+    it('should update hasFullHand to true when we add 5 cards', () => {
+      // assemble
+      const mockHand:HandOfCards = {cards: [
+          {value: 'one', suit: 'c'},    // 1
+          {value: 'two', suit: 'd'},    // 2
+          {value: 'three', suit: 'h'},  // 3
+          {value: 'four', suit: 's'},   // 4
+        ]};
+      component.handToEval.set(mockHand);
+      const addCardToHandSpy = vi.spyOn(component, 'addCardToHand');
+
+      // act
+      button.click();
+
+      // assert
+      expect(addCardToHandSpy).toHaveBeenCalledOnce();
+      expect(component.handToEval().cards.length).toBe(5);
+      expect(component.hasFullHand()).toBe(true);
     });
 
     it('should not add when there is already 5 cards in hand', () => {
@@ -57,7 +79,6 @@ describe('CardForm', () => {
           {value: 'five', suit: 'c'},   // 5
         ]};
       component.handToEval.set(mockHand);
-      const button  = fixture.nativeElement.querySelector('#add-card-to-hand-button');
       const consoleLogSpy = vi.spyOn(console, 'log');
 
       // Act
@@ -76,7 +97,6 @@ describe('CardForm', () => {
           {...cardToAdd},
         ]};
       component.handToEval.set(mockHand);
-      const button  = fixture.nativeElement.querySelector('#add-card-to-hand-button');
       const consoleLogSpy = vi.spyOn(console, 'log');
 
       // Act
