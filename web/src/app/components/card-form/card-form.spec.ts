@@ -4,6 +4,7 @@ import { CardForm } from './card-form';
 import {Card, HandOfCards} from '../../interfaces/handOfCards';
 import {EvaluateHandService} from '../../services/evaluate-hand-service';
 import {describe, it, expect, vi, beforeEach} from 'vitest';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 describe('CardForm', () => {
   let component: CardForm;
@@ -11,7 +12,8 @@ describe('CardForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardForm]
+      imports: [CardForm],
+      providers: [provideHttpClientTesting()],
     })
     .compileComponents();
 
@@ -134,6 +136,25 @@ describe('CardForm', () => {
       // Assert
       expect(evaluateSubmitSpy).toHaveBeenCalledWith(component.handToEval());
       expect(submitHandSpy).toHaveBeenCalledOnce();
+    });
+
+    it('should not submit when we have too few cards in hand', () => {
+      // Assemble
+      const evaluateSubmitSpy = vi.spyOn(TestBed.inject(EvaluateHandService), 'submitHandForEvaluation');
+      const mockHand:HandOfCards = {cards: [
+          {value: 'one', suit: 'c'},    // 1
+          {value: 'two', suit: 'd'},    // 2
+          {value: 'three', suit: 'h'},  // 3
+        ]};
+      component.handToEval.set(mockHand);
+      const consoleLogSpy = vi.spyOn(console, 'log');
+
+      // Act
+      component.submitHand();  // directly calling the fn since the button will be disabled
+
+      // Assert
+      expect(evaluateSubmitSpy).not.toHaveBeenCalled();
+      expect(consoleLogSpy).toBeCalledWith('5 cards are required to submit');
     });
   });
 });
