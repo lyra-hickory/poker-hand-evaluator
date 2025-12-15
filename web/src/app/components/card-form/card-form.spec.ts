@@ -31,7 +31,7 @@ describe('CardForm', () => {
       value: 'king',
       suit: 'd'
     };
-    let button:HTMLElement;
+    let button:any;
 
     beforeEach(() => {
       component.inputCard.set({...cardToAdd});
@@ -52,7 +52,7 @@ describe('CardForm', () => {
       expect(component.hasFullHand()).toBe(false);
     });
 
-    it('should update hasFullHand to true when we add 5 cards', () => {
+    it('should update hasFullHand to true when we add 5 cards and disable add button', () => {
       // assemble
       const mockHand:HandOfCards = {cards: [
           {value: 'one', suit: 'c'},    // 1
@@ -70,6 +70,9 @@ describe('CardForm', () => {
       expect(addCardToHandSpy).toHaveBeenCalledOnce();
       expect(component.handToEval().cards.length).toBe(5);
       expect(component.hasFullHand()).toBe(true);
+      expect(button.disabled).toBe(false);
+      fixture.detectChanges();
+      expect(button.disabled).toBe(true);
     });
 
     it('should not add when there is already 5 cards in hand', () => {
