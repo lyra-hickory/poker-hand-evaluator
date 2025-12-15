@@ -28,6 +28,7 @@ async def root():
 # TODO: Test the api endpoint
 @app.post("/eval-hand/")
 async def evaluate(cards: list[Card], response: Response):
+    # TODO: validate unique-ness of the cards
     # Validate the cards input
     # Valid amount of cards?
     if len(cards) != 5:
