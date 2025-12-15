@@ -60,6 +60,7 @@ export class CardForm {
       return;
     }
 
+    // TODO: update this to a setter
     this.handToEval().cards.push(newCard);
     if (this.handToEval().cards.length === 5)
       this.hasFullHand.set(true);

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardForm } from './card-form';
 import {Card, HandOfCards} from '../../interfaces/handOfCards';
-import {expect} from 'vitest';
+import {beforeEach, expect} from 'vitest';
 
 describe('CardForm', () => {
   let component: CardForm;
@@ -24,14 +24,17 @@ describe('CardForm', () => {
   });
 
   describe('addCardToHand', () => {
+    const cardToAdd:Card = {
+      value: 'king',
+      suit: 'd'
+    };
+
+    beforeEach(() => {
+      component.inputCard.set({...cardToAdd});
+    })
+
     it('should add a card to the hand when button is clicked', () => {
       // assemble
-      const cardToAdd:Card = {
-        value: 'king',
-        suit: 'd'
-      };
-      component.inputCard.set(cardToAdd);
-
       const button  = fixture.nativeElement.querySelector('#add-card-to-hand-button');
       const addCardToHandSpy = vi.spyOn(component, 'addCardToHand');
 
@@ -46,12 +49,6 @@ describe('CardForm', () => {
 
     it('should not add when there is already 5 cards in hand', () => {
       // Assemble
-      const cardToAdd:Card = {
-        value: 'king',
-        suit: 'd'
-      };
-      component.inputCard.set(cardToAdd);
-
       const mockHand:HandOfCards = {cards: [
           {value: 'one', suit: 'c'},    // 1
           {value: 'two', suit: 'd'},    // 2
@@ -70,6 +67,25 @@ describe('CardForm', () => {
       // TODO: replace with checking form errors
       expect(consoleLogSpy).toBeCalledWith('Hand is already at 5 cards!');
       expect(component.handToEval().cards.length).toBe(5);
+      expect(component.handToEval()).toEqual(mockHand);
+    });
+
+    it('should not add duplicate cards', () => {
+      // Assemble
+      const mockHand:HandOfCards = {cards: [
+          {...cardToAdd},
+        ]};
+      component.handToEval.set(mockHand);
+      const button  = fixture.nativeElement.querySelector('#add-card-to-hand-button');
+      const consoleLogSpy = vi.spyOn(console, 'log');
+
+      // Act
+      button.click();
+
+      // Assert
+      // TODO: replace with checking form errors
+      expect(consoleLogSpy).toBeCalledWith('You have already added the King of Diamonds');
+      expect(component.handToEval().cards.length).toBe(1);
       expect(component.handToEval()).toEqual(mockHand);
     });
   });
