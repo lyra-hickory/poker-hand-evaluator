@@ -8,14 +8,14 @@ def hand_to_str_list(hand: list[Card]):
     for card in hand:
         str_suit = ''
         match card.suit:
+            case 's':
+                str_suit = 'Spades'
             case 'h':
                 str_suit = 'Hearts'
             case 'd':
                 str_suit = 'Diamonds'
             case 'c':
                 str_suit = 'Clubs'
-            case 's':
-                str_suit = 'Spades'
             case _:
                 str_suit = ''
         str_cards.append(f'{card.value.capitalize()} of {str_suit}')
