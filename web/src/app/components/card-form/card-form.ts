@@ -69,12 +69,14 @@ export class CardForm {
 
   submitHand = ():void => {
     if(this.handToEval().cards.length !== 5) {
+      // TODO: set error message informing the user
       console.log('5 cards are required to submit')
       return;
     }
 
     this.evaluateHandService.submitHandForEvaluation(this.handToEval())
       .subscribe((res) => {
+        // TODO: display response to user
         console.log(res);
       })
   }
