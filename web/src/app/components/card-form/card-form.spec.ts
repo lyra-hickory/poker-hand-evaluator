@@ -156,5 +156,29 @@ describe('CardForm', () => {
       expect(evaluateSubmitSpy).not.toHaveBeenCalled();
       expect(consoleLogSpy).toBeCalledWith('5 cards are required to submit');
     });
+
+    it('should not click the button if hasFullHand false', () => {
+      // Assemble
+      const evaluateSubmitSpy = vi.spyOn(TestBed.inject(EvaluateHandService), 'submitHandForEvaluation');
+      const submitHandSpy = vi.spyOn(component, 'submitHand');
+      const mockHand:HandOfCards = {cards: [
+          {value: 'one', suit: 'c'},    // 1
+          {value: 'two', suit: 'd'},    // 2
+          {value: 'three', suit: 'h'},  // 3
+          {value: 'four', suit: 's'},   // 4
+        ]};
+      component.handToEval.set(mockHand);
+      component.hasFullHand.set(false);  // default is false but setting it explicitly regardless
+      const button = fixture.nativeElement.querySelector('#submit-hand-button');
+
+      // Act
+      fixture.detectChanges();  // detect changes before we click
+      button.click();
+
+      // Assert
+      expect(evaluateSubmitSpy).not.toHaveBeenCalled();
+      expect(submitHandSpy).not.toHaveBeenCalled();
+      expect(button.disabled).toBe(true);
+    });
   });
 });
