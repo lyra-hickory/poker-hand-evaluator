@@ -1,9 +1,23 @@
 from fastapi import FastAPI, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 
 from .evaluate_hand import evaluate_hand
 from .models.CardModel import Card
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:4200",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
