@@ -30,9 +30,21 @@
     </select>
 
     <button
-      class="mx-4 p-2 border border-black rounded-lg hover:cursor-pointer hover:bg-amber-100"
-      (click)="addCardToHand()">
+      (click)="addCardToHand()"
+      [disabled]="hasFullHand()"
+      [classList]="!hasFullHand() ?
+      'hover:cursor-pointer hover:bg-amber-100 mx-4 p-2 border border-black rounded-lg' :
+      'bg-gray-200 mx-4 p-2 border border-black rounded-lg'">
       Add Card to Hand
+    </button>
+
+    <button
+      (click)="submitHand()"
+      [disabled]="!hasFullHand()"
+      [classList]="hasFullHand() ?
+      'hover:cursor-pointer hover:bg-amber-100 mx-4 p-2 border border-black rounded-lg' :
+      'bg-gray-200 mx-4 p-2 border border-black rounded-lg'">
+      Submit Hand
     </button>
   </div>
 

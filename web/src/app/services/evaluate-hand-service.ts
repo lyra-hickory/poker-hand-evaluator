@@ -10,13 +10,13 @@ import {Observable} from 'rxjs';
 export class EvaluateHandService {
   // TODO: make this configurable outside of changing the code
   // env vars maybe?
-  private evaluatorUrl:string = '';
+  private evaluatorUrl:string = 'http://localhost:8000/eval-hand/';
 
   constructor(private http: HttpClient) {}
 
   // Do we maybe add some validation here?
   // I think it would be best if validation is done before submit at component level
   submitHandForEvaluation = (hand: HandOfCards):Observable<Evaluation> => {
-    return this.http.post<Evaluation>(this.evaluatorUrl, hand);
+    return this.http.post<Evaluation>(this.evaluatorUrl, hand.cards);
   }
 }

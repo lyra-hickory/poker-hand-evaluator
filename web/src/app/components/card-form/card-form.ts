@@ -1,6 +1,7 @@
 import {Component, signal} from '@angular/core';
 import {Card, HandOfCards} from '../../interfaces/handOfCards';
 import {Field, form} from '@angular/forms/signals';
+import {EvaluateHandService} from '../../services/evaluate-hand-service';
 
 @Component({
   selector: 'app-card-form',
@@ -11,12 +12,18 @@ import {Field, form} from '@angular/forms/signals';
   styleUrl: './card-form.css',
 })
 export class CardForm {
+  // Hand variables
   handToEval = signal<HandOfCards>({cards: []});
+  hasFullHand = signal(false);
+
+  // Form variables
   inputCard = signal<Card>({
     value: 'ace',
     suit: 's',
   });
   cardForm = form(this.inputCard);
+
+  constructor(private evaluateHandService: EvaluateHandService) {}
 
   addCardToHand = ():void => {
     // We have a limit of 5 cards per hand
@@ -54,6 +61,20 @@ export class CardForm {
     }
 
     this.handToEval().cards.push(newCard);
+    if (this.handToEval().cards.length === 5)
+      this.hasFullHand.set(true);
     console.log('Successfully added card!')
+  }
+
+  submitHand = ():void => {
+    if(this.handToEval().cards.length !== 5) {
+      console.log('5 cards are required to submit')
+      return;
+    }
+
+    this.evaluateHandService.submitHandForEvaluation(this.handToEval())
+      .subscribe((res) => {
+        console.log(res);
+      })
   }
 }
